@@ -12,7 +12,6 @@ def check_vars(**vars):
             logging.error(f"{var_name} required")
             exit(1)
 
-
 API_KEY = os.getenv("COINGECKO_KEY")
 TIMEOUT = int(os.getenv("TIMEOUT", 15))
 CURRENCY = os.getenv("CURRENCY", "USD")
@@ -50,5 +49,3 @@ while True:
         else:
             logging.debug(f"Unable to find {name} in histograms")
     time.sleep(TIMEOUT)
-    
-
