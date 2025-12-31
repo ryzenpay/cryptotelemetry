@@ -16,12 +16,21 @@ def check_vars(**vars):
 API_KEY = os.getenv("COINGECKO_KEY")
 TIMEOUT = int(os.getenv("TIMEOUT", 15))
 CURRENCY = os.getenv("CURRENCY", "USD")
-COINS = {
-    "LTC": "litecoin",
-    "BTC": "bitcoin",
-    "ETH": "ethereum",
-    "XRP": "ripple",
-}
+COINS = {}
+
+for name, val in os.environ.items():
+    if not name.startswith("COIN_"):
+        continue
+    if not name.endswith("_ID"):
+        continue
+    tag = name.split("_")[1]
+    COINS[tag] = val
+
+logging.info(f"loaded {len(COINS)} coins")
+
+if not COINS:
+    logging.warning("No coins to check, exiting...")
+    exit(0)
 
 api = CoinGeckoAPI(api_key=API_KEY, retries=0)
 meter = metrics.get_meter_provider().get_meter("cryptotelemetry")
