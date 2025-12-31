@@ -1,5 +1,8 @@
 services:
   cryptotelemetry:
     build: .
-    env_file:
-      - .env
+    env_file: .env
+  otel-collector:
+    image: otel/opentelemetry-collector
+    ports:
+      - "4317:4317"
