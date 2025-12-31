@@ -1,0 +1,5 @@
+services:
+  cryptotelemetry:
+    build: .
+    env_file:
+      - .env
