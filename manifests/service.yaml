@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: cryptotelemetry
+  name: cryptotelemetry
+  namespace: monitoring
+spec:
+  ports:
+    - name: otel
+      port: 4317
+  selector:
+    app: cryptotelemetry

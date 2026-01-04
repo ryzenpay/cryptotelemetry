@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cryptotelemetry
+  namespace: monitoring
+  labels:
+    app: cryptotelemetry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cryptotelemetry
+  template:
+    metadata:
+      labels:
+        app: cryptotelemetry
+    spec:
+      imagePullSecrets:
+        - name: harborpullsecret
+      containers:
+      - name: cryptotelemetry
+        image: harbor.ryzen.me/library/cryptotelemetry:latest
+        ports:
+        - containerPort: 4317
+          protocol: TCP
+        env:
+          - name: OTEL_SERVICE_NAME
+            value: cryptotelemetry
+          - name: OTEL_EXPORTER_OTLP_ENDPOINT
+            value: http://otel-collector:4317
+          - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
+            value: "true"
+          - name: TIMEOUT
+            value: "15"
+          - name: CURRENCY
+            value: USD
+          - name: LEVEL
+            value: "20"
+          - name: COIN_BTC_ID
+            value: bitcoin
+          - name: COIN_LTC_ID
+            value: litecoin
+          - name: COIN_XRP_ID
+            value: ripple
+          - name: COIN_ETH_ID
+            value: ethereum
