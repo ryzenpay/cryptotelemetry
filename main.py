@@ -39,13 +39,16 @@ for tag, name in COINS.items():
     histograms[name] = meter.create_histogram(name=tag, description=name, unit=CURRENCY)
 
 while True:
-    prices = api.get_price(ids=','.join(COINS.values()), vs_currencies=CURRENCY)
-    logging.info(prices)
-    for name, details in prices.items():
-        name: str
-        price: int = details.get(CURRENCY.lower())
-        if histograms[name]:
-            histograms[name].record(price)
-        else:
-            logging.debug(f"Unable to find {name} in histograms")
+    try:
+        prices = api.get_price(ids=','.join(COINS.values()), vs_currencies=CURRENCY)
+        logging.info(prices)
+        for name, details in prices.items():
+            name: str
+            price: int = details.get(CURRENCY.lower())
+            if histograms[name]:
+                histograms[name].record(price)
+            else:
+                logging.debug(f"Unable to find {name} in histograms")
+    except Exception as e:
+        logging.error(f"Exception in loop: {e}",)
     time.sleep(TIMEOUT)
