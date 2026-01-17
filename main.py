@@ -52,7 +52,5 @@ while True:
                 logging.debug(f"Unable to find {name} in histograms")
     except Exception as e:
         logging.error(f"Exception in loop: {e}",)
-        if isinstance(e, HTTPError):
-            logging.info("Sleeping a minute to reset ratelimit")
-            time.sleep(60)
+        time.sleep(60)
     time.sleep(TIMEOUT)
