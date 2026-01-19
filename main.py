@@ -41,11 +41,10 @@ for tag, name in COINS.items():
 
 while True:
     try:
-        prices = api.get_price(ids=','.join(COINS.values()), vs_currencies=CURRENCY)
+        prices: dict[str, dict[str, float]] = api.get_price(ids=','.join(COINS.values()), vs_currencies=CURRENCY)
         logging.info(prices)
         for name, details in prices.items():
-            name: str
-            price: int = details.get(CURRENCY.lower())
+            price = details.get(CURRENCY.lower(), 0.0)
             if histograms[name]:
                 histograms[name].record(price)
             else:
