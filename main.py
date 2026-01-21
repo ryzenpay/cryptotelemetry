@@ -3,7 +3,6 @@ import logging
 logging.basicConfig(level=int(os.getenv("LEVEL", 20)))
 import time
 from opentelemetry import metrics
-from opentelemetry.metrics import Histogram
 from pycoingecko import CoinGeckoAPI
 
 def check_vars(**vars):
@@ -34,9 +33,10 @@ if not COINS:
 api = CoinGeckoAPI(api_key=API_KEY, retries=0)
 meter = metrics.get_meter_provider().get_meter("cryptotelemetry")
 
-histograms: dict[str, Histogram] = {}
+histograms = {}
 for tag, name in COINS.items():
-    histograms[name] = meter.create_histogram(name=tag, description=name, unit=CURRENCY)
+    histograms[name] = meter.create_gauge(name=tag, description=name, unit=CURRENCY.lower())
+    
 
 while True:
     try:
@@ -45,7 +45,7 @@ while True:
         for name, details in prices.items():
             price = details.get(CURRENCY.lower(), 0.0)
             if histograms[name]:
-                histograms[name].record(price)
+                histograms[name].set(price)
                 logging.debug(f"pushed {price} for {name}")
             else:
                 logging.debug(f"Unable to find {name} in histograms")
