@@ -5,7 +5,6 @@ import time
 from opentelemetry import metrics
 from opentelemetry.metrics import Histogram
 from pycoingecko import CoinGeckoAPI
-from requests.exceptions import HTTPError
 
 def check_vars(**vars):
     for var_name, var_val in vars.items():
@@ -47,6 +46,7 @@ while True:
             price = details.get(CURRENCY.lower(), 0.0)
             if histograms[name]:
                 histograms[name].record(price)
+                logging.debug(f"pushed {price} for {name}")
             else:
                 logging.debug(f"Unable to find {name} in histograms")
     except Exception as e:
