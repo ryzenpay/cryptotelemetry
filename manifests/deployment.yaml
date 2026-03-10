@@ -23,14 +23,11 @@ spec:
       containers:
       - name: cryptotelemetry
         image: git.ryzen.me/ryzen/cryptotelemetry:latest
-        ports:
-        - containerPort: 4317
-          protocol: TCP
         env:
           - name: OTEL_SERVICE_NAME
             value: cryptotelemetry
           - name: OTEL_EXPORTER_OTLP_ENDPOINT
-            value: http://signoz-otel-collector.monitoring.svc.cluster.local:4317
+            value: http://vlsingle-vlsingle:9428
           - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
             value: "true"
           - name: TIMEOUT
