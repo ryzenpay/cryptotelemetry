@@ -27,7 +27,7 @@ spec:
           - name: OTEL_SERVICE_NAME
             value: cryptotelemetry
           - name: OTEL_EXPORTER_OTLP_ENDPOINT
-            value: http://vmsingle-vmsingle:8428
+            value: http://vmsingle-vmsingle:8428/api/v1/write
           - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
             value: "true"
           - name: TIMEOUT
